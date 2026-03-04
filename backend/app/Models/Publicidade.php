@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Publicidade extends Model
 {
     protected $table = 'cad_publicidade';
+    protected $fillable = [
+        'titulo',
+        'descricao',
+        'imagem',
+        'botao_link',
+        'titulo_botao_link',
+        'dt_inicio',
+        'dt_fim'
+    ];
 
     public function estados(){
         return $this->belongsToMany(
