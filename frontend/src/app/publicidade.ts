@@ -33,7 +33,6 @@ export class Publicidade {
       'X-Requested-With': 'XMLHttpRequest'
     });
 
-    // Monta a URL como: .../api/publicidade/1
     const query = this.http.get<Ipublicidade>(`${API_PATH}/${id}`, { headers });
 
     try {
@@ -43,4 +42,47 @@ export class Publicidade {
       throw error;
     }
   }
+  
+  async ExcluirPublicidade(id: number) {
+    const query = this.http.delete(`${API_PATH}/${id}`);
+    try {
+      return await lastValueFrom(query);
+    } catch (error) {
+      console.error('Erro ao excluir:', error);
+      throw error;
+    }
+  }
+
+  async EditarPublicidade(id: number, dados: FormData) {
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    });
+
+    const query = this.http.post(`${API_PATH}/${id}?_method=PUT`, dados, { headers });
+    
+    try {
+      return await lastValueFrom(query);
+    } catch (error) {
+      console.error('Erro ao editar com imagem:', error);
+      throw error;
+    }
+  }
+
+  async AdicionarPublicidade(dados: FormData) {
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    });
+
+    const query = this.http.post(`${API_PATH}`, dados, { headers });
+    
+    try {
+      return await lastValueFrom(query);
+    } catch (error) {
+      console.error('Erro ao adicionar:', error);
+      throw error;
+    }
+  }
+
 }

@@ -9,3 +9,91 @@
   <input #idInput type="number" placeholder="Digite o ID">
   <button (click)="ObterUmaPublicidade(idInput.valueAsNumber)">Buscar por ID</button>
 </div>
+
+<hr>
+<input #idDelete type="number" placeholder="Digite o ID">
+<button (click)="Deletar(idDelete.valueAsNumber)" style="color: red;">Excluir Propaganda</button>
+
+<hr>
+<h3>Editar Publicidade Completa</h3>
+<div style="border: 1px solid #ccc; padding: 10px; display: flex; flex-direction: column; gap: 8px; max-width: 400px;">
+  <input #idEdit type="number" placeholder="ID para editar">
+  <input #novoTitulo type="text" placeholder="Novo Título">
+  <textarea #novaDescricao placeholder="Nova Descrição"></textarea>
+  
+  <label>Link do Botão:</label>
+  <input #link type="text" value="https://jacarei.sp.gov.br">
+  
+  <label>Texto do Botão:</label>
+  <input #tituloLink type="text" value="Saiba Mais">
+
+  <label>Estado (ID):</label>
+  <input #estado type="number" value="1">
+
+  <label>Data Início:</label>
+  <input #inicio type="date">
+
+  <label>Data Fim:</label>
+  <input #fim type="date">
+
+  <label>Nova Imagem (opcional):</label>
+  <input type="file" (change)="onFileSelected($event)">
+  
+  <button (click)="Editar(
+    idEdit.valueAsNumber, 
+    novoTitulo.value, 
+    novaDescricao.value,
+    link.value,
+    tituloLink.value,
+    estado.valueAsNumber,
+    inicio.value,
+    fim.value
+  )">
+    Salvar Alterações Completas
+  </button>
+</div>
+
+<hr>
+<div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; max-width: 450px; border: 1px solid #ddd;">
+  <h2 style="color: #333; margin-top: 0;"> + Nova Publicidade</h2>
+  
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <input #addTitulo type="text" placeholder="Título da Propaganda" style="padding: 8px;">
+    <textarea #addDescricao placeholder="Descrição detalhada" style="padding: 8px; min-height: 80px;"></textarea>
+    
+    <label>Link de Destino:</label>
+    <input #addLink type="text" value="https://jacarei.sp.gov.br" style="padding: 8px;">
+    
+    <label>Texto do Botão:</label>
+    <input #addTituloLink type="text" value="Confira Agora" style="padding: 8px;">
+
+    <div style="display: flex; gap: 10px;">
+      <div style="flex: 1;">
+        <label>Data Início:</label>
+        <input #addInicio type="date" style="width: 100%; padding: 8px;">
+      </div>
+      <div style="flex: 1;">
+        <label>Data Fim:</label>
+        <input #addFim type="date" style="width: 100%; padding: 8px;">
+      </div>
+    </div>
+
+    <label>Estado da Publicidade (ID):</label>
+    <input #addEstado type="number" value="1" style="padding: 8px;">
+
+    <label><strong>Selecionar Imagem:</strong></label>
+    <input type="file" (change)="onFileSelected($event)" style="padding: 5px; background: #fff; border: 1px dashed #ccc;">
+    
+    <button (click)="Adicionar(
+      addTitulo.value, 
+      addDescricao.value,
+      addLink.value,
+      addTituloLink.value,
+      addEstado.valueAsNumber,
+      addInicio.value,
+      addFim.value
+    )" style="background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+       Criar Publicidade
+    </button>
+  </div>
+</div>
