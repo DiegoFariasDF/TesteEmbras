@@ -1,173 +1,214 @@
-<h2>Gerenciamento de Publicidade</h2>
+<div class="container">
 
-<button (click)="modalNova = true">Nova publicidade</button>
+  <div class="top-bar">
+    <h2>Gerenciamento de Publicidade</h2>
 
-<br><br>
+    <button class="btn-novo" (click)="modalNova = true">
+      + Nova publicidade
+    </button>
+  </div>
 
-<table border="1" width="100%">
-  <tr>
-    <th>Foto</th>
-    <th>Título</th>
-    <th>Descrição</th>
-    <th>Estados</th>
-    <th>Status</th>
-    <th>Ações</th>
-  </tr>
+  <div class="lista">
 
-  <tr *ngFor="let pub of publicidades">
+    <div class="card" *ngFor="let pub of publicidades">
 
-    <td>
-      <img 
-        [src]="'http://localhost:8000/storage/' + pub.imagem" 
-        width="80"
-      >
-    </td>
+      <div class="img">
+        <img 
+        [src]="'http://localhost:8000/storage/' + pub.imagem"
+        />
+      </div>
 
-    <td>{{ pub.titulo }}</td>
+      <div class="conteudo">
 
-    <td>{{ pub.descricao }}</td>
+        <h3>{{ pub.titulo }}</h3>
 
-    <td>
-      <span *ngFor="let est of pub.estados">
-        {{ est.sigla }}
-      </span>
-    </td>
+        <p>{{ pub.descricao }}</p>
 
-    <td>
+        <div class="estados">
+          <span class="badge-estado" *ngFor="let est of pub.estados">
+            {{ est.sigla }}
+          </span>
+        </div>
 
-      <span *ngIf="pub.dt_inicio <= hoje && pub.dt_fim >= hoje">
-        Ativo
-      </span>
+        <div class="status">
 
-      <span *ngIf="pub.dt_inicio > hoje">
-        Publicará em {{ pub.dt_inicio }}
-      </span>
+          <span class="ativo" *ngIf="pub.dt_inicio <= hoje && pub.dt_fim >= hoje">
+            Publicidade atual
+          </span>
 
-      <span *ngIf="pub.dt_fim < hoje">
-        Expirado
-      </span>
+          <span class="programado" *ngIf="pub.dt_inicio > hoje">
+            Publicará em {{ pub.dt_inicio }}
+          </span>
 
-    </td>
+          <span class="expirado" *ngIf="pub.dt_fim < hoje">
+            Expirado
+          </span>
 
-    <td>
-      <button (click)="SelecionarPublicidade(pub)">Editar</button>
-      <button (click)="Deletar(pub.id)">Excluir</button>
-    </td>
+        </div>
 
-  </tr>
+      </div>
 
-</table>
+      <div class="acoes">
+
+        <button class="btn-editar"
+        (click)="SelecionarPublicidade(pub)">
+        Editar
+        </button>
+
+        <button class="btn-excluir"
+        (click)="Deletar(pub.id)">
+        Excluir
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 
 <div *ngIf="modalEditar" class="modal-backdrop">
+  <div class="modal">
+    <h2>Editar publicidade</h2>
 
-<div class="modal">
+    <div class="form-group">
+      <label>Estados contemplados *</label>
+      <select multiple [(ngModel)]="publicidadeSelecionada.estados" class="form-control">
+        <option *ngFor="let est of estados" [value]="est.id">
+          {{ est.sigla }}
+        </option>
+      </select>
+    </div>
 
-<h2>Editar Publicidade</h2>
+    <div class="form-group">
+      <label>Título *</label>
+      <input [(ngModel)]="publicidadeSelecionada.titulo" class="form-control" placeholder="Digite o título">
+    </div>
 
-<label>Título</label>
-<input [(ngModel)]="publicidadeSelecionada.titulo">
+    <div class="form-group">
+      <label>Descrição *</label>
+      <textarea [(ngModel)]="publicidadeSelecionada.descricao" class="form-control" placeholder="Digite a descrição" rows="3"></textarea>
+    </div>
 
-<label>Descrição</label>
-<textarea [(ngModel)]="publicidadeSelecionada.descricao"></textarea>
+    <div class="form-row">
+      <div class="form-group half">
+        <label>Título do botão *</label>
+        <input [(ngModel)]="publicidadeSelecionada.titulo_botao_link" class="form-control" placeholder="Ex: Saiba mais">
+      </div>
 
-<label>Link</label>
-<input [(ngModel)]="publicidadeSelecionada.botao_link">
+      <div class="form-group half">
+        <label>Link do botão *</label>
+        <input [(ngModel)]="publicidadeSelecionada.botao_link" class="form-control" placeholder="https://...">
+      </div>
+    </div>
 
-<label>Título botão</label>
-<input [(ngModel)]="publicidadeSelecionada.titulo_botao_link">
+    <div class="form-row">
+      <div class="form-group half">
+        <label>Data de publicação *</label>
+        <input type="date" [(ngModel)]="publicidadeSelecionada.dt_inicio" class="form-control">
+      </div>
 
-<label>Estados</label>
+      <div class="form-group half">
+        <label>Data final da publicação *</label>
+        <input type="date" [(ngModel)]="publicidadeSelecionada.dt_fim" class="form-control">
+      </div>
+    </div>
 
-<select multiple [(ngModel)]="publicidadeSelecionada.estados[0].id">
-  <option *ngFor="let est of estados" [value]="est.id">
-    {{ est.descricao }} ({{ est.sigla }})
-  </option>
-</select>
+    <div class="form-group">
+      <label>IMAGEM DA PUBLICIDADE</label>
+      <div class="upload-area" (click)="fileInput.click()">
+        <input type="file" #fileInput (change)="onFileSelected($event)" hidden accept="image/*">
+        <span *ngIf="!imagemNome">Selecione o arquivo ou arraste aqui para adicioná-lo.</span>
+        <span *ngIf="imagemNome" class="file-name">{{ imagemNome }}</span>
+      </div>
+    </div>
 
-<label>Data início</label>
-<input type="date" [(ngModel)]="publicidadeSelecionada.dt_inicio">
-
-<label>Data fim</label>
-<input type="date" [(ngModel)]="publicidadeSelecionada.dt_fim">
-
-<label>Imagem</label>
-<input type="file" (change)="onFileSelected($event)">
-
-<br><br>
-
-<button (click)="Editar(
-publicidadeSelecionada.id,
-publicidadeSelecionada.titulo,
-publicidadeSelecionada.descricao,
-publicidadeSelecionada.botao_link,
-publicidadeSelecionada.titulo_botao_link,
-publicidadeSelecionada.estados[0].id,
-publicidadeSelecionada.dt_inicio,
-publicidadeSelecionada.dt_fim
-)">
-Salvar
-</button>
-
-<button (click)="FecharModal()">
-Cancelar
-</button>
-
-</div>
+    <div class="modal-actions">
+      <button class="btn-cancelar" (click)="FecharModal()">Cancelar</button>
+      <button class="btn-confirmar" (click)="Editar(
+        publicidadeSelecionada.id,
+        publicidadeSelecionada.titulo,
+        publicidadeSelecionada.descricao,
+        publicidadeSelecionada.botao_link,
+        publicidadeSelecionada.titulo_botao_link,
+        publicidadeSelecionada.estados,
+        publicidadeSelecionada.dt_inicio,
+        publicidadeSelecionada.dt_fim
+      )">Salvar</button>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="modalNova" class="modal-backdrop">
+  <div class="modal">
+    <h2>Nova publicidade</h2>
 
-<div class="modal">
+    <div class="form-group">
+      <label>Estados contemplados *</label>
+      <select multiple #estado class="form-control">
+        <option *ngFor="let est of estados" [value]="est.id">
+          {{ est.sigla }}
+        </option>
+      </select>
+    </div>
 
-<h2>Nova Publicidade</h2>
+    <div class="form-group">
+      <label>Título *</label>
+      <input #titulo class="form-control" placeholder="Digite o título">
+    </div>
 
-<label>Título</label>
-<input #titulo>
+    <div class="form-group">
+      <label>Descrição *</label>
+      <textarea #descricao class="form-control" placeholder="Digite a descrição" rows="3"></textarea>
+    </div>
 
-<label>Descrição</label>
-<textarea #descricao></textarea>
+    <div class="form-row">
+      <div class="form-group half">
+        <label>Título do botão *</label>
+        <input #tituloLink class="form-control" placeholder="Ex: Saiba mais">
+      </div>
 
-<label>Link</label>
-<input #link>
+      <div class="form-group half">
+        <label>Link do botão *</label>
+        <input #link class="form-control" placeholder="https://...">
+      </div>
+    </div>
 
-<label>Título botão</label>
-<input #tituloLink>
+    <div class="form-row">
+      <div class="form-group half">
+        <label>Data de publicação *</label>
+        <input type="date" #inicio class="form-control">
+      </div>
 
-<label>Estado</label>
-<select multiple #estado>
-  <option *ngFor="let est of estados" [value]="est.id">
-    {{ est.sigla }}
-  </option>
-</select>
+      <div class="form-group half">
+        <label>Data final da publicação *</label>
+        <input type="date" #fim class="form-control">
+      </div>
+    </div>
 
-<label>Data início</label>
-<input type="date" #inicio>
+    <div class="form-group">
+      <label>IMAGEM DA PUBLICIDADE</label>
+      <div class="upload-area" (click)="fileInput.click()">
+        <input type="file" #fileInput (change)="onFileSelected($event)" hidden accept="image/*">
+        <span *ngIf="!imagemNome">Selecione o arquivo ou arraste aqui para adicioná-lo.</span>
+        <span *ngIf="imagemNome" class="file-name">{{ imagemNome }}</span>
+      </div>
+    </div>
 
-<label>Data fim</label>
-<input type="date" #fim>
-
-<label>Imagem</label>
-<input type="file" (change)="onFileSelected($event)">
-
-<br><br>
-
-<button (click)="Adicionar(
-titulo.value,
-descricao.value,
-link.value,
-tituloLink.value,
-estado,
-inicio.value,
-fim.value
-)">
-Salvar
-</button>
-
-<button (click)="modalNova = false">
-Cancelar
-</button>
-
-</div>
+    <div class="modal-actions">
+      <button class="btn-cancelar" (click)="modalNova = false">Cancelar</button>
+      <button class="btn-confirmar" (click)="Adicionar(
+        titulo.value,
+        descricao.value,
+        link.value,
+        tituloLink.value,
+        estado,
+        inicio.value,
+        fim.value
+      )">Confirmar</button>
+    </div>
+  </div>
 </div>
 

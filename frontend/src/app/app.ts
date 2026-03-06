@@ -19,6 +19,8 @@ public publicidades: any[] = [];
 
 modalNova: boolean = false;
 
+imagemNome: string = '';
+
 hoje: string = new Date().toISOString().split('T')[0];
 
 modalEditar: boolean = false;

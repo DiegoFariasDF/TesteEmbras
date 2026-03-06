@@ -39,3 +39,265 @@ display:flex;
 flex-direction:column;
 gap:10px;
 }
+
+
+.container{
+    width:90%;
+    margin:auto;
+    font-family:Arial;
+}
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.btn-novo{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.lista{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.card{
+    display:flex;
+    background:white;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    padding:15px;
+    align-items:center;
+}
+
+.img img{
+    width:90px;
+    height:70px;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+.conteudo{
+    flex:1;
+    padding:0 20px;
+}
+
+.conteudo h3{
+    margin:0;
+}
+
+.conteudo p{
+    margin:5px 0 10px 0;
+    color:#555;
+}
+
+.estados{
+    margin-bottom:10px;
+}
+
+.badge-estado{
+    background:#eee;
+    padding:4px 8px;
+    border-radius:6px;
+    font-size:12px;
+    margin-right:5px;
+}
+
+.status span{
+    font-size:12px;
+    padding:4px 8px;
+    border-radius:6px;
+}
+
+.ativo{
+    background:#d1fae5;
+    color:#065f46;
+}
+
+.programado{
+    background:#e0e7ff;
+    color:#3730a3;
+}
+
+.expirado{
+    background:#fee2e2;
+    color:#7f1d1d;
+}
+
+.acoes{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.btn-editar{
+    background:#fbbf24;
+    border:none;
+    padding:6px 10px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.btn-excluir{
+    background:#ef4444;
+    border:none;
+    padding:6px 10px;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+}
+
+
+/*dps daqui*/
+
+/* Adicione isso ao seu CSS existente */
+
+.modal {
+  width: 500px; /* Aumentei um pouco */
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-row .half {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+select[multiple] {
+  height: 80px;
+  padding: 5px;
+}
+
+select[multiple] option {
+  padding: 5px;
+  border-radius: 3px;
+}
+
+select[multiple] option:checked {
+  background: #2563eb linear-gradient(0deg, #2563eb 0%, #2563eb 100%);
+  color: white;
+}
+
+.upload-area {
+  border: 2px dashed #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  background: #f9f9f9;
+  transition: all 0.3s;
+}
+
+.upload-area:hover {
+  border-color: #2563eb;
+  background: #f0f4ff;
+}
+
+.file-name {
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.btn-cancelar {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-confirmar {
+  padding: 8px 16px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-cancelar:hover {
+  background: #f5f5f5;
+}
+
+.btn-confirmar:hover {
+  background: #1d4ed8;
+}
+
+/* Ajuste para o select multiple */
+select[multiple] {
+  width: 100%;
+  padding: 8px;
+}
+
+/* Scroll personalizado para a modal */
+.modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.modal::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
