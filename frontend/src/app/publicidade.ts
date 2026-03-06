@@ -42,6 +42,10 @@ export class Publicidade {
       throw error;
     }
   }
+
+  ObterEstados(): Promise<any> {
+  return this.http.get('http://localhost:8000/api/estados').toPromise();
+  }
   
   async ExcluirPublicidade(id: number) {
     const query = this.http.delete(`${API_PATH}/${id}`);

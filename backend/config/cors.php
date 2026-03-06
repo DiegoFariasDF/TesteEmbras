@@ -5,9 +5,9 @@ return [
     'allowed_methods' => ['*'],
     // Adicione os links do seu Codespaces aqui
     'allowed_origins' => [
-        'https://refactored-fortnight-v7p76vq6vvjh6pxq-4200.app.github.dev',
-        'https://refactored-fortnight-v7p76vq6vvjh6pxq-8000.app.github.dev',
-        'https://refactored-fortnight-v7p76vq6vvjh6pxq-5432.app.github.dev'
+        'http://localhost:4200',
+        'http://localhost:8000',
+        'http://localhost:5432'
     ],
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],

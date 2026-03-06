@@ -1,99 +1,173 @@
-<h1>Publicidade</h1>
-<button (click)="ObterTodasPublicidade()">obter todos</button>
+<h2>Gerenciamento de Publicidade</h2>
 
-<hr>
+<button (click)="modalNova = true">Nova publicidade</button>
 
-<button (click)="ObterUmaPublicidade(1)">Obter Publicidade 1</button>
+<br><br>
 
-<div>
-  <input #idInput type="number" placeholder="Digite o ID">
-  <button (click)="ObterUmaPublicidade(idInput.valueAsNumber)">Buscar por ID</button>
+<table border="1" width="100%">
+  <tr>
+    <th>Foto</th>
+    <th>Título</th>
+    <th>Descrição</th>
+    <th>Estados</th>
+    <th>Status</th>
+    <th>Ações</th>
+  </tr>
+
+  <tr *ngFor="let pub of publicidades">
+
+    <td>
+      <img 
+        [src]="'http://localhost:8000/storage/' + pub.imagem" 
+        width="80"
+      >
+    </td>
+
+    <td>{{ pub.titulo }}</td>
+
+    <td>{{ pub.descricao }}</td>
+
+    <td>
+      <span *ngFor="let est of pub.estados">
+        {{ est.sigla }}
+      </span>
+    </td>
+
+    <td>
+
+      <span *ngIf="pub.dt_inicio <= hoje && pub.dt_fim >= hoje">
+        Ativo
+      </span>
+
+      <span *ngIf="pub.dt_inicio > hoje">
+        Publicará em {{ pub.dt_inicio }}
+      </span>
+
+      <span *ngIf="pub.dt_fim < hoje">
+        Expirado
+      </span>
+
+    </td>
+
+    <td>
+      <button (click)="SelecionarPublicidade(pub)">Editar</button>
+      <button (click)="Deletar(pub.id)">Excluir</button>
+    </td>
+
+  </tr>
+
+</table>
+
+
+<div *ngIf="modalEditar" class="modal-backdrop">
+
+<div class="modal">
+
+<h2>Editar Publicidade</h2>
+
+<label>Título</label>
+<input [(ngModel)]="publicidadeSelecionada.titulo">
+
+<label>Descrição</label>
+<textarea [(ngModel)]="publicidadeSelecionada.descricao"></textarea>
+
+<label>Link</label>
+<input [(ngModel)]="publicidadeSelecionada.botao_link">
+
+<label>Título botão</label>
+<input [(ngModel)]="publicidadeSelecionada.titulo_botao_link">
+
+<label>Estados</label>
+
+<select multiple [(ngModel)]="publicidadeSelecionada.estados[0].id">
+  <option *ngFor="let est of estados" [value]="est.id">
+    {{ est.descricao }} ({{ est.sigla }})
+  </option>
+</select>
+
+<label>Data início</label>
+<input type="date" [(ngModel)]="publicidadeSelecionada.dt_inicio">
+
+<label>Data fim</label>
+<input type="date" [(ngModel)]="publicidadeSelecionada.dt_fim">
+
+<label>Imagem</label>
+<input type="file" (change)="onFileSelected($event)">
+
+<br><br>
+
+<button (click)="Editar(
+publicidadeSelecionada.id,
+publicidadeSelecionada.titulo,
+publicidadeSelecionada.descricao,
+publicidadeSelecionada.botao_link,
+publicidadeSelecionada.titulo_botao_link,
+publicidadeSelecionada.estados[0].id,
+publicidadeSelecionada.dt_inicio,
+publicidadeSelecionada.dt_fim
+)">
+Salvar
+</button>
+
+<button (click)="FecharModal()">
+Cancelar
+</button>
+
+</div>
 </div>
 
-<hr>
-<input #idDelete type="number" placeholder="Digite o ID">
-<button (click)="Deletar(idDelete.valueAsNumber)" style="color: red;">Excluir Propaganda</button>
+<div *ngIf="modalNova" class="modal-backdrop">
 
-<hr>
-<h3>Editar Publicidade Completa</h3>
-<div style="border: 1px solid #ccc; padding: 10px; display: flex; flex-direction: column; gap: 8px; max-width: 400px;">
-  <input #idEdit type="number" placeholder="ID para editar">
-  <input #novoTitulo type="text" placeholder="Novo Título">
-  <textarea #novaDescricao placeholder="Nova Descrição"></textarea>
-  
-  <label>Link do Botão:</label>
-  <input #link type="text" value="https://jacarei.sp.gov.br">
-  
-  <label>Texto do Botão:</label>
-  <input #tituloLink type="text" value="Saiba Mais">
+<div class="modal">
 
-  <label>Estado (ID):</label>
-  <input #estado type="number" value="1">
+<h2>Nova Publicidade</h2>
 
-  <label>Data Início:</label>
-  <input #inicio type="date">
+<label>Título</label>
+<input #titulo>
 
-  <label>Data Fim:</label>
-  <input #fim type="date">
+<label>Descrição</label>
+<textarea #descricao></textarea>
 
-  <label>Nova Imagem (opcional):</label>
-  <input type="file" (change)="onFileSelected($event)">
-  
-  <button (click)="Editar(
-    idEdit.valueAsNumber, 
-    novoTitulo.value, 
-    novaDescricao.value,
-    link.value,
-    tituloLink.value,
-    estado.valueAsNumber,
-    inicio.value,
-    fim.value
-  )">
-    Salvar Alterações Completas
-  </button>
+<label>Link</label>
+<input #link>
+
+<label>Título botão</label>
+<input #tituloLink>
+
+<label>Estado</label>
+<select multiple #estado>
+  <option *ngFor="let est of estados" [value]="est.id">
+    {{ est.sigla }}
+  </option>
+</select>
+
+<label>Data início</label>
+<input type="date" #inicio>
+
+<label>Data fim</label>
+<input type="date" #fim>
+
+<label>Imagem</label>
+<input type="file" (change)="onFileSelected($event)">
+
+<br><br>
+
+<button (click)="Adicionar(
+titulo.value,
+descricao.value,
+link.value,
+tituloLink.value,
+estado,
+inicio.value,
+fim.value
+)">
+Salvar
+</button>
+
+<button (click)="modalNova = false">
+Cancelar
+</button>
+
+</div>
 </div>
 
-<hr>
-<div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; max-width: 450px; border: 1px solid #ddd;">
-  <h2 style="color: #333; margin-top: 0;"> + Nova Publicidade</h2>
-  
-  <div style="display: flex; flex-direction: column; gap: 12px;">
-    <input #addTitulo type="text" placeholder="Título da Propaganda" style="padding: 8px;">
-    <textarea #addDescricao placeholder="Descrição detalhada" style="padding: 8px; min-height: 80px;"></textarea>
-    
-    <label>Link de Destino:</label>
-    <input #addLink type="text" value="https://jacarei.sp.gov.br" style="padding: 8px;">
-    
-    <label>Texto do Botão:</label>
-    <input #addTituloLink type="text" value="Confira Agora" style="padding: 8px;">
-
-    <div style="display: flex; gap: 10px;">
-      <div style="flex: 1;">
-        <label>Data Início:</label>
-        <input #addInicio type="date" style="width: 100%; padding: 8px;">
-      </div>
-      <div style="flex: 1;">
-        <label>Data Fim:</label>
-        <input #addFim type="date" style="width: 100%; padding: 8px;">
-      </div>
-    </div>
-
-    <label>Estado da Publicidade (ID):</label>
-    <input #addEstado type="number" value="1" style="padding: 8px;">
-
-    <label><strong>Selecionar Imagem:</strong></label>
-    <input type="file" (change)="onFileSelected($event)" style="padding: 5px; background: #fff; border: 1px dashed #ccc;">
-    
-    <button (click)="Adicionar(
-      addTitulo.value, 
-      addDescricao.value,
-      addLink.value,
-      addTituloLink.value,
-      addEstado.valueAsNumber,
-      addInicio.value,
-      addFim.value
-    )" style="background-color: #28a745; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
-       Criar Publicidade
-    </button>
-  </div>
-</div>
