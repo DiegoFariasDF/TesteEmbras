@@ -13,9 +13,17 @@ arquivoSelecionado: File | null = null;
 
 public publicidadeSelecionada: any = null;
 
+publicidadesFiltradas: any[] = [];
+
 public estados: any[] = [];
 
 public publicidades: any[] = [];
+
+menuAberto: number | null = null;
+
+estadoSelecionado: string = '';
+
+textoBusca: string = '';
 
 modalNova: boolean = false;
 
@@ -34,6 +42,44 @@ this.ObterEstados();
 
 onFileSelected(event: any) {
 this.arquivoSelecionado = event.target.files[0];
+}
+
+
+toggleMenu(id: number){
+  if(this.menuAberto === id){
+    this.menuAberto = null;
+  }else{
+    this.menuAberto = id;
+  }
+}
+
+filtrarEstado(event: any){
+  this.estadoSelecionado = event.target.value;
+  this.aplicarFiltros();
+}
+
+pesquisar(event: any){
+  this.textoBusca = event.target.value.toLowerCase();
+  this.aplicarFiltros();
+}
+
+aplicarFiltros(){
+
+  this.publicidadesFiltradas = this.publicidades.filter(pub => {
+
+    const filtroEstado =
+      !this.estadoSelecionado ||
+      pub.estados?.some((est: any) => est.sigla === this.estadoSelecionado);
+
+    const filtroTexto =
+      !this.textoBusca ||
+      pub.titulo.toLowerCase().includes(this.textoBusca.toLowerCase()) ||
+      pub.descricao.toLowerCase().includes(this.textoBusca.toLowerCase());
+
+    return filtroEstado && filtroTexto;
+
+  });
+
 }
 
 // selecionar publicidade para edição
@@ -70,6 +116,7 @@ ObterTodasPublicidade(){
 this.publicidadeService.ObterTodasPublicidade()
 .then(dados => {
 this.publicidades = dados;
+this.publicidadesFiltradas = dados;
 console.log(this.publicidades);
 })
 .catch(error => console.error(error));

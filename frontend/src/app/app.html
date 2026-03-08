@@ -8,59 +8,80 @@
     </button>
   </div>
 
+  <div class="filtros">
+
+    <select class="filtro-estados" (change)="filtrarEstado($event)">
+      <option value="">Visualizar todos os Estados</option>
+      <option *ngFor="let est of estados" [value]="est.sigla">
+        {{ est.sigla }}
+      </option>
+    </select>
+
+    <input 
+      type="text"
+      placeholder="Pesquisar"
+      class="campo-busca"
+      [(ngModel)]="textoBusca"
+      (input)="aplicarFiltros()"
+    />
+
+  </div>
+
   <div class="lista">
 
-    <div class="card" *ngFor="let pub of publicidades">
+    <div class="card" *ngFor="let pub of publicidadesFiltradas">
 
-      <div class="img">
-        <img 
-        [src]="'http://localhost:8000/storage/' + pub.imagem"
-        />
-      </div>
+  <div class="img">
+    <img [src]="'http://localhost:8000/storage/' + pub.imagem"/>
+  </div>
 
-      <div class="conteudo">
+  <div class="conteudo">
 
-        <h3>{{ pub.titulo }}</h3>
+    <h3>{{ pub.titulo }}</h3>
 
-        <p>{{ pub.descricao }}</p>
+    <p>{{ pub.descricao }}</p>
 
-        <div class="estados">
-          <span class="badge-estado" *ngFor="let est of pub.estados">
-            {{ est.sigla }}
-          </span>
-        </div>
+    <div class="estados">
+      <span class="badge-estado" *ngFor="let est of pub.estados">
+        {{ est.sigla }}
+      </span>
+    </div>
 
-        <div class="status">
+    <div class="rodape-card">
 
-          <span class="ativo" *ngIf="pub.dt_inicio <= hoje && pub.dt_fim >= hoje">
-            Publicidade atual
-          </span>
+      <div class="status">
 
-          <span class="programado" *ngIf="pub.dt_inicio > hoje">
-            Publicará em {{ pub.dt_inicio }}
-          </span>
+        <span class="ativo" *ngIf="pub.dt_inicio <= hoje && pub.dt_fim >= hoje">
+          Publicidade atual
+        </span>
 
-          <span class="expirado" *ngIf="pub.dt_fim < hoje">
-            Expirado
-          </span>
+        <span class="programado" *ngIf="pub.dt_inicio > hoje">
+          Será publicada em {{ pub.dt_inicio }}
+        </span>
 
-        </div>
+        <span class="expirado" *ngIf="pub.dt_fim < hoje">
+          Expirada
+        </span>
 
       </div>
 
-      <div class="acoes">
+      <button class="menu-acoes"
+      (click)="toggleMenu(pub.id)">
+        ⋮
+      </button>
 
-        <button class="btn-editar"
-        (click)="SelecionarPublicidade(pub)">
-        Editar
+      <div class="menu-dropdown" *ngIf="menuAberto === pub.id">
+        <button (click)="SelecionarPublicidade(pub)">
+          Editar
         </button>
-
-        <button class="btn-excluir"
-        (click)="Deletar(pub.id)">
-        Excluir
+        <button (click)="Deletar(pub.id)">
+          Excluir
         </button>
-
       </div>
+
+    </div>
+
+  </div>
 
     </div>
 
