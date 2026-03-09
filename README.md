@@ -67,9 +67,12 @@ Entrar na pasta
 
 
 Subir os containers
-    docker-compose up 
-    
-    Esse comando irá iniciar: Backend Laravel, Frontend Angular, Banco PostgreSQL
+  docker-compose up
+  
+Esse comando irá iniciar: Backend Laravel, Frontend Angular, Banco PostgreSQL
+
+Após finalizar a inicialização, rode o comando abaixo para popular a tabela cad_estados:
+  docker exec -it publicidade_backend php artisan migrate:fresh --seed
 
 Acessos:
 Frontend: http://localhost:4200
